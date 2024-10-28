@@ -1,0 +1,31 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+#crosshair {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+#hits, #accuracy {
+    position: absolute;
+}
+
+#hits {
+    left: 0px;
+    color: white;
+    font-size: 20px;
+}
+
+#accuracy {
+    right: 0px;
+    color: white;
+    font-size: 20px;
+}
