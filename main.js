@@ -1,5 +1,6 @@
 import * as Three from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 const renderer = new Three.WebGLRenderer({ antialias: true })
 renderer.setSize(innerWidth, innerHeight)
 renderer.setPixelRatio(devicePixelRatio)
@@ -16,9 +17,6 @@ document.body.appendChild(renderer.domElement)
 
 const scene = new Three.Scene()
 const camera = new Three.PerspectiveCamera(75, innerWidth/innerHeight, .1, 1000)
-
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.update()
 
 const light = new Three.PointLight(0xffffff, 50, 100)
 light.position.y = 2
@@ -87,6 +85,24 @@ function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
 }
 
+const loader = new FBXLoader()
+
+const gun = new Three.Object3D()
+
+function loadGun() {
+    loader.load('Pistol.fbx', (object) => {
+        object.scale.set(.0005, .0005, .0005)
+        object.rotation.y = Math.PI
+        object.position.z = 4
+        object.position.x = .2
+        object.position.y = .85
+        gun.copy(object)
+        scene.add(gun)
+    })
+}
+
+loadGun()
+
 const onMouseMove = (event) => {
     if (document.pointerLockElement != null) {
         const movementX = event.movementX;
@@ -94,6 +110,8 @@ const onMouseMove = (event) => {
         camera.rotation.y -= movementX * 0.001;
         camera.rotation.x -= movementY * 0.001;
         camera.rotation.x = clamp(camera.rotation.x, -Math.PI / 2, Math.PI / 2);
+        gun.rotation.copy(camera.rotation)
+        gun.rotation.y = Math.PI
     }
 };
 
